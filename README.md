@@ -33,3 +33,6 @@ As per 4 Sept 2018, there is an experimental alternative of Electron, [Electrino
 # Summary
 
 Personally, I think Electron is great for beginners to explore desktop application development. But due to its heavyweight application sizes, it's better to use other frameworks such as Haxe and NW.js for more complicated and advanced desktop applications.
+
+# About The Project
+The previous collaborator has been working on the login system for the application. This includes a login page, a sign up page and a sign in page, all are still incomplete. The core functionalities of the app itself are still left untouched.
