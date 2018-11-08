@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Sign in - Booking System</title>
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">
+        <img id="test" src="assets/ntu.png" class="responsive-img">
+      </a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot">
+    <div class="container">
+      <h3 class="header center">Booking System</h3>
+
+      <br>
+      <br>
+
+      <div class="row">
+        <form id="form" class="col s8 offset-s2 m6 offset-m3 l6 offset-l3 xl4 offset-xl4">
+            <div class="row">
+              <div class="flash-container"></div>
+            </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="username" type="text">
+              <label for="username">Username</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="password" type="password">
+              <label for="password">Password</label>
+            </div>
+          </div>
+
+          <label>Domain</label>
+          <select id="domain" class="browser-default">
+            <option value="1">Student</option>
+            <option value="2">Staff</option>
+          </select>
+
+          <br><br>
+
+          <div class="row">
+            <div class="col s12 center-align">
+              <button class="btn waves-effect waves-light ntu-red" type="submit">Sign in
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <div class="col s12 center-align">
+          <span>Haven't got an account? <a href="signup.html">Sign up</a></span>
+        </div>
+      </div>
+
+      <br><br>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>window.$ = window.jQuery = require('./js/jquery-3.3.1.js');</script>
+
+  <script src="js/materialize.js"></script>
+
+  <script>
+    $(document).ready(() => {
+      $('select').formSelect();
+
+      $(".flash-container").click(() => {
+        $(this).html("");
+      });
+    });
+
+    const {ipcRenderer} = require('electron');
+
+    $("#form").submit((event) => {
+      event.preventDefault();
+
+      const u = $('#username').val();
+      const p = $('#password').val();
+      const d = $('#domain').val();
+
+      if (u === "") {
+        $('#username').focus();
+      }
+      else {
+        formData = {"username": u, "password": p, "domain": d};
+        ipcRenderer.send('signin:submit', formData);
+      }
+
+      ipcRenderer.on('signin:check', (event, message) => {
+        if (message === "false") {
+          $('#password').val("");
+          $('#password').focus();
+          $('.flash-container').html('<div class="alert alert-danger"><i class="material-icons right">close</i>Incorrect username or password.</div>');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
